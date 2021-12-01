@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>1.png</file>
+        <file>2.png</file>
+        <file>3.png</file>
+        <file>4.png</file>
+        <file>5.png</file>
+        <file>6.png</file>
+        <file>7.png</file>
+        <file>27.png</file>
+        <file>28.png</file>
+        <file>29.png</file>
+        <file>30.png</file>
+        <file>31.png</file>
+        <file>32.png</file>
+        <file>board1.jpg</file>
+        <file>26.png</file>
+    </qresource>
+</RCC>
