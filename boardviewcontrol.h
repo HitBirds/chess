@@ -21,6 +21,7 @@ public:
     //把QML数据传给C++类
     //判断用户点击动作合法性
     Q_INVOKABLE int actionJudge(const int&);
+    Q_INVOKABLE void initChesses(const QString& c = "BLACK");
     //直接用MEMBER使chessesMap可以读写
     Q_PROPERTY(QVariant myChessesMap MEMBER myChessesMap NOTIFY myChessesChanged)
     Q_PROPERTY(QVariant enemyChessesMap MEMBER enemyChessesMap NOTIFY enemyChessesChanged)
@@ -32,8 +33,8 @@ private:
     void generalBitsBoard();
     bool isFirstClick(const int&);
     bool isMyChess(const int&);
-    bool isPrevMoveable(const int&);
-    bool isEnemyChess(const int&);
+    bool mvChess(const int&);
+    bool rvEnemyChess(const int&);
 signals:
     void myChessesChanged();
     void enemyChessesChanged();

@@ -2,7 +2,7 @@
 
 BoardModelControl::BoardModelControl(QObject *parent) : QObject(parent)
 {
-
+    bitBoard.resize(BOARD_ROW*BOARD_COL);
 }
 
 BoardModelControl::~BoardModelControl()
@@ -23,7 +23,7 @@ void BoardModelControl::initBoardFromFile(const QString &filename)
     QTextStream in(&file);
     QString posesLine,typeLine;
     while (!in.atEnd()) {
-        myColor = in.readLine() == "RED";
+        myColor = in.readLine()=="RED";
         posesLine = in.readLine();
         typeLine = in.readLine();
         //qDebug()<<line;
@@ -32,13 +32,16 @@ void BoardModelControl::initBoardFromFile(const QString &filename)
     QStringList typeList = typeLine.split(QLatin1Char(' '));
     for(int i = 0;i<posesList.length();++i)
     {
-        if(typeList[i][0] == 'R' )
-            //(myColor ? myChesses.insert(chessesList[i]) : enemyChesses.insert(chessesList[i]));
-            RChessesMap[posesList[i]]=typeList[i];
-        else{
-            //myColor ? enemyChesses.insert(chessesList[i]) : myChesses.insert(chessesList[i]);
-            BChessesMap[posesList[i]]=typeList[i];
+        if(typeList[i][0] == 'R'){
+            if(myColor)myChessesMap[posesList[i]]=typeList[i];
+            else enemyChessesMap[posesList[i]]=typeList[i];
+        }
+        else
+        {
+            if(myColor)enemyChessesMap[posesList[i]]=typeList[i];
+            else myChessesMap[posesList[i]]=typeList[i];
         }
         board_data[posesList[i].toInt()]=typeList[i];
+        board_data[posesList[i].toInt()]=true;
     }
 }

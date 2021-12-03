@@ -8,10 +8,10 @@ Window{
     minimumHeight: 800
     minimumWidth: 1100
     visible: true
+    title: qsTr("人机对战")
     PVEForm {
         id:pveform
         anchors.fill: parent
-
         property int gridH: mouseArea.height/10
         property int gridW : mouseArea.width/9
 
@@ -47,11 +47,26 @@ Window{
                 }
                 ++i;
             }
-
         }
 
         function moveChess(f,t)
         {
+            var c = t;
+            var y = (Math.floor(c/9)+0.5)*0.0935-0.039;
+            var x = (c%9+0.5)*0.0965-0.039;
+            var i=0;
+            while(i<myChessModel.count)
+            {
+                if(f == myChessModel.get(i).name)
+                {
+                    myChessModel.get(i).x=Qt.binding(function() { return x*chessWindow.height });
+                    myChessModel.get(i).y=Qt.binding(function() { return y*chessWindow.height });
+                    myChessModel.get(i).name = t;
+                    myChessModel.get(i).scale = 1;
+                    break;
+                }
+                ++i;
+            }
         }
 
         function delChess(curChess)
@@ -61,12 +76,12 @@ Window{
             {
                 if(curChess == enemyChessModel.get(i).name)
                 {
+                    enemyChessModel.get(i).destroy();
                     enemyChessModel.remove(i,1);
                     break;
                 }
                 ++i;
             }
-
         }
 
         mouseArea.onClicked: {
@@ -94,14 +109,12 @@ Window{
                     break;
                 case 4:
                     moveChess(boardViewControl.preCheckedChess,curChess);
-                    restoreImg(boardViewControl.preCheckedChess);
                     boardViewControl.preCheckedChess=0;
                     break;
                 case 5:
                     moveChess(boardViewControl.preCheckedChess,curChess);
-                    restoreImg(boardViewControl.preCheckedChess);
-                    boardViewControl.preCheckedChess=0;
                     delChess(curChess);
+                    boardViewControl.preCheckedChess=0;
                     break;
                 default:break;
                 }
@@ -109,7 +122,7 @@ Window{
         function createImg(p,w,r){
             //console.log(chessWindow.height*0.0965)
             var c = parseInt(p,10);
-            console.log(c);
+            //console.log(c);
             var y = (Math.floor(c/9)+0.5)*0.0935-0.039;
             var x = (c%9+0.5)*0.0965-0.039;
             var obj = Qt.createQmlObject("import QtQuick 2.0;
@@ -119,28 +132,32 @@ Window{
                     width:chessWindow.height*0.078;
                     height: width;
                     source: \"res/" + w + "\";
+                    Behavior on x {PropertyAnimation{duration: 200;}}
+                    Behavior on y {PropertyAnimation{duration : 200;}}
                     }",
                         mouseArea,"dynamicItem");
             if(r == 0)myChessModel.append(obj);
             else enemyChessModel.append(obj);
             }
         }
-        BoardViewControl{
-            id:boardViewControl
-            Component.onCompleted: {
-                var chessType;
-                for (var key in myChessesMap) {
-                    chessType = myChessesMap[key];
-                    pveform.createImg(key,type2Img[chessType],0);
-                }
-                for (key in enemyChessesMap) {
-                    chessType = enemyChessesMap[key];
-                    pveform.createImg(key,type2Img[chessType],180);
-                }
-                //console.log(myChessModel.count);
-                //console.log(enemyChessModel.count);
+    BoardViewControl{
+        id:boardViewControl
+        Component.onCompleted: {
+            boardViewControl.initChesses(myLoader.myColor);
+            var chessType;
+            for (var key in myChessesMap) {
+                chessType = myChessesMap[key];
+                pveform.createImg(key,type2Img[chessType],0);
             }
+            for (key in enemyChessesMap) {
+                chessType = enemyChessesMap[key];
+                pveform.createImg(key,type2Img[chessType],180);
+            }
+            //console.log(myChessModel.count);
+            //console.log(enemyChessModel.count);
         }
+    }
+
     onClosing: {myLoader.source=""}
 }
 

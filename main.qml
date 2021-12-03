@@ -8,9 +8,14 @@ Window {
     title: qsTr("中国象棋")
     id: mainWin
     MainForm {
-        Loader {id: myLoader}
+        id:mainForm
+        Loader {
+            id: myLoader
+            property string myColor: "RED"
+        }
         btnPVP.onClicked: {
             console.log("btnPVP clicked")
+            myLoader.source = "RBChoose.qml"
         }
         btnPVE.onClicked: {
             console.log("btnPVE clicked")
@@ -23,5 +28,9 @@ Window {
             console.log("btnStudy clicked")
         }
         anchors.fill: parent
+        Connections {
+                target: myLoader.item
+                onChooseColor: myLoader.myColor=msg
+        }
     }
 }

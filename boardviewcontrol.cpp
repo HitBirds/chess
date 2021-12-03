@@ -2,10 +2,16 @@
 
 BoardViewControl::BoardViewControl(QObject *parent) : QObject(parent)
 {
+
+}
+
+void BoardViewControl::initChesses(const QString& c)
+{
     initSettings();
-    boardData.initBoardFromFile();
-    myChessesMap = boardData.myColor ? QVariant(boardData.RChessesMap) : QVariant(boardData.BChessesMap);
-    enemyChessesMap = boardData.myColor ? QVariant(boardData.BChessesMap) : QVariant(boardData.RChessesMap);
+    bool color = c=="RED";
+    boardData.initBoardFromFile(color ? "E:\\QTprojs\\qtQuickChess\\bd_data\\defaultR.bd" : "E:\\QTprojs\\qtQuickChess\\bd_data\\defaultB.bd");
+    myChessesMap = QVariant(boardData.myChessesMap);
+    enemyChessesMap = QVariant(boardData.enemyChessesMap);
     preCheckedChess = 0;
 }
 
@@ -25,7 +31,6 @@ void BoardViewControl::initSettings(const QString &filename)
     type2Img = QVariant(t2i);
 }
 
-
 void BoardViewControl::generalBitsBoard()
 {
 
@@ -40,9 +45,9 @@ int BoardViewControl::actionJudge(const int& pos)
     }
     else
     {
-        if(isPrevMoveable(pos))
+        if(mvChess(pos))
         {
-            return isEnemyChess(pos) ? 5 : 4;
+            return rvEnemyChess(pos) ? 5 : 4;
         }
         else
         {
@@ -59,17 +64,27 @@ bool BoardViewControl::isFirstClick(const int& pos)
 }
 bool BoardViewControl::isMyChess(const int& pos)
 {
-    if(myChessesMap.toMap().contains(QString::number(pos)))return true;
+    if(boardData.myChessesMap.contains(QString::number(pos)))return true;
     else return false;
 }
-bool BoardViewControl::isPrevMoveable(const int& curPos)
+bool BoardViewControl::mvChess(const int& pos)
 {
-    QString cType = boardData.board_data[preCheckedChess];
-    qDebug()<<cType;
+    //按照象棋规则检查棋子是否可以移动，可以移动的话就修改myChessesMap里面preCheckedChess的位置
+    //enemyChessesMap.toMap().contains(QString::number(preCheckedChess))
+    QString k(preCheckedChess);
+    boardData.myChessesMap.insert(QString::number(pos),boardData.myChessesMap[k]);
+    boardData.myChessesMap.remove(k);
+    boardData.bitBoard[preCheckedChess] = false;
+    boardData.bitBoard[pos] = true;
     return true;
 }
-bool BoardViewControl::isEnemyChess(const int& pos)
+bool BoardViewControl::rvEnemyChess(const int& pos)
 {
-    if(enemyChessesMap.toMap().contains(QString::number(pos)))return true;
+    //有敌方棋子的话就移走enemyChessesMap里的敌方棋子
+    if(boardData.enemyChessesMap.remove(QString::number(pos)) == 1)
+    {
+        boardData.bitBoard[preCheckedChess] = false;
+        return true;
+    }
     else return false;
 }

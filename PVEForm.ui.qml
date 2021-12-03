@@ -1,4 +1,4 @@
-import QtQuick 2.3
+import QtQuick 2.6
 import QtQuick.Controls 2.2
 
 Item {
@@ -38,7 +38,7 @@ Item {
             }
         }
         Rectangle {
-            id: chatRoom
+            id: rectangle
             width: 300
             height: row.height
             color: "#ffff00"
@@ -46,15 +46,34 @@ Item {
 
             Column {
                 id: column
-                anchors.fill: parent
+                width: parent.width
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+                anchors.top: parent.top
                 spacing: 10
                 Button {
                     id: reload
                     text: "重新开始"
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
                 Button {
                     id: regret
                     text: "悔棋"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Rectangle {
+                    id: chatHis
+                    width: parent.width
+                    height: 170
+                    color: "#ff00ff"
+                }
+
+                Rectangle {
+                    id: chatSnd
+                    width: parent.width
+                    height: 170
+                    color: "#00ffff"
                 }
             }
         }
