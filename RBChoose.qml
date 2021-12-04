@@ -5,18 +5,17 @@ Window {
     id: chooseRBWin
     title: qsTr("选择红黑")
     width: 400
-    height: 400
+    height: 200
     visible: true
     modality: Qt.ApplicationModal
-    signal chooseColor(string msg)
     RBChooseForm {
         btnR.onClicked: {
-            chooseRBWin.chooseColor("RED")
+            myLoader.myColor = "RED"
             chooseRBWin.close()
             myLoader.source = "PVE.qml"
         }
         btnB.onClicked: {
-            chooseRBWin.chooseColor("BLACK")
+            myLoader.myColor = "BLACK"
             chooseRBWin.close()
             myLoader.source = "PVE.qml"
         }

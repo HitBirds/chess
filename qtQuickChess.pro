@@ -18,7 +18,7 @@ SOURCES += main.cpp \
     chessstruct.cpp \
 
 RESOURCES += qml.qrc \
-    res/res.qrc
+    res.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

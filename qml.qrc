@@ -6,5 +6,7 @@
         <file>PVEForm.ui.qml</file>
         <file>RBChoose.qml</file>
         <file>RBChooseForm.ui.qml</file>
+        <file>Board.qml</file>
+        <file>BoardForm.ui.qml</file>
     </qresource>
 </RCC>

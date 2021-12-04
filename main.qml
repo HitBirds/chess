@@ -14,23 +14,15 @@ Window {
             property string myColor: "RED"
         }
         btnPVP.onClicked: {
-            console.log("btnPVP clicked")
-            myLoader.source = "RBChoose.qml"
-        }
-        btnPVE.onClicked: {
-            console.log("btnPVE clicked")
             myLoader.source = "PVE.qml"
         }
+        btnPVE.onClicked: {
+            myLoader.source = "RBChoose.qml"
+        }
         btnWatch.onClicked: {
-            console.log("btnWatch clicked")
         }
         btnStudy.onClicked: {
-            console.log("btnStudy clicked")
         }
         anchors.fill: parent
-        Connections {
-                target: myLoader.item
-                onChooseColor: myLoader.myColor=msg
-        }
     }
 }
